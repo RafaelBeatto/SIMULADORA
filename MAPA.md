@@ -54,6 +54,8 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 - `js/rb-apps.js` (`window.RB_APPS`) é a configuração única. URL que começa com `URL_` aparece como "Link pendente" (não clicável). `enabled: false` esconde o app.
 - No header: `<div class="rb-launcher" data-rb-launcher data-current-app="investimentos">` envolve a logo (`.rb-launcher__button`). `data-current-app` marca o app atual ("Você está aqui").
 - Ícones embutidos: `calculator`, `building`, `notebook`, `chart`, `file`, `settings`, `wheel`, `app`; ou caminho de imagem.
+- O painel é `position: fixed` (posição calculada ao abrir), para não ser cortado por barras laterais com rolagem.
+- Já integrado também no jogo Gira Conhecimento (`data-current-app="gira-conhecimento"`).
 - Para usar em outro sistema RB: copiar `js/rb-apps.js`, `js/rb-launcher.js`, `css/rb-launcher.css`, envolver a logo como acima e trocar `data-current-app`. O CSS usa os tokens `--rb-*` (com valores de reserva se o projeto não tiver).
 
 ## 5. Onde fica cada coisa

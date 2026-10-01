@@ -70,15 +70,15 @@
     if (!button.title) button.title = "Aplicativos RB";
 
     const isOpen = () => !panel.hidden;
-    // Mantém o painel dentro da tela (12px de margem), alinhado à logo quando couber.
+    // Posiciona o painel (fixo na janela) logo abaixo da logo, sempre dentro da tela (12px de margem).
+    // Ser "fixo" evita que barras laterais ou áreas com rolagem cortem o painel.
     function place() {
       const gap = 12, width = Math.min(336, window.innerWidth - gap * 2);
-      const rootLeft = root.getBoundingClientRect().left;
-      let left = -8;
-      if (rootLeft + left + width > window.innerWidth - gap) left = window.innerWidth - gap - width - rootLeft;
-      if (rootLeft + left < gap) left = gap - rootLeft;
+      const rect = button.getBoundingClientRect();
+      const left = Math.max(gap, Math.min(rect.left - 8, window.innerWidth - gap - width));
       panel.style.width = `${width}px`;
       panel.style.left = `${left}px`;
+      panel.style.top = `${Math.round(rect.bottom + 10)}px`;
     }
     function open() {
       place();
@@ -99,6 +99,7 @@
     button.addEventListener("click", () => (isOpen() ? close(false) : open()));
     document.addEventListener("click", (event) => { if (!root.contains(event.target)) close(false); });
     window.addEventListener("resize", () => { if (isOpen()) place(); });
+    window.addEventListener("scroll", () => { if (isOpen()) place(); }, true);
     document.addEventListener("keydown", (event) => { if (event.key === "Escape" && isOpen()) close(true); });
     // Fecha ao escolher um app (ele abre em nova aba; esta aba continua como está).
     panel.addEventListener("click", (event) => { if (event.target.closest("a.rb-launcher__item")) close(false); });
