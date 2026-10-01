@@ -119,7 +119,9 @@
       rows.forEach((row) => {
         const [day, month, year] = row.data.split("/");
         const key = `${year}-${month}-${day}`;
-        cdiSeries.set(key, Number(row.valor.replace(",", ".")));
+        // A série 12 do BCB vem em % ao dia; o motor usa % ao ano (base 252).
+        const daily = Number(row.valor.replace(",", ".")) / 100;
+        cdiSeries.set(key, (Math.pow(1 + daily, 252) - 1) * 100);
       });
       status.textContent = `${rows.length} observações carregadas do SGS/BCB. Dias ausentes usam a taxa futura informada.`;
     } catch (error) {

@@ -82,7 +82,7 @@ Impostos em 2026: tabela regressiva (22,5% / 20% / 17,5% / 15%) e isenção de L
 ## 7. Pontos de atenção
 
 - **CDI padrão** (`Config.cdiPadrao` = 14,15% a.a., ago/2026): revisar periodicamente.
-- **Bug conhecido, ainda não corrigido** (Modo Avançado, botão "CDI online"): a série 12 do BCB vem em **% ao dia**, mas o código a trata como % ao ano. O CSV importado espera % ao ano.
+- Botão "CDI online" (Modo Avançado): a série 12 do BCB vem em **% ao dia** e é convertida para % ao ano (base 252) ao carregar. O CSV importado espera % ao ano.
 - O Modo Avançado repete no HTML os padrões de impostos que estão em `Config.impostos`. Ao mudar a lei, atualize os dois.
 - `hidden` só funciona por causa da regra `[hidden] { display: none !important; }` em `estilos.css` (as classes `.layout` e `.field` usam `display: grid`).
 - Gráfico: o Modo Simples desenha o saldo **bruto** (o imposto só é cobrado no resgate) e uma linha tracejada com o total depositado.
