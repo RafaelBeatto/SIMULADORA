@@ -13,6 +13,7 @@ window.Textos = {
     valorInicial: "Quanto você vai investir agora?",
     prazo: "Por quanto tempo?",
     mensal: "Vai colocar dinheiro todo mês?",
+    taxa: "Quanto o app oferece?",
     meses: "meses",
     anos: "anos",
     mensalDica: "Deixe 0 se não for colocar."
@@ -53,6 +54,13 @@ window.Textos = {
       paraQue: "Quanto mais tempo, mais rende e menos imposto você paga.",
       colocar: "Um número e escolha se é em meses ou anos.",
       exemplo: "1 ano ou 18 meses."
+    },
+    taxa: {
+      titulo: "Quanto o app oferece?",
+      oQue: "É quanto este investimento rende, em comparação com o CDI (a taxa básica que os bancos usam).",
+      paraQue: "No RDB Planejado, a taxa muda conforme a data que você escolhe para tirar o dinheiro.",
+      colocar: "Escolha a data no app do Nubank e copie aqui a % do CDI que aparece. Se não souber, deixe o valor sugerido.",
+      exemplo: "103 (quer dizer 103% do CDI: rende 3% a mais que a Caixinha comum)."
     },
     mensal: {
       titulo: "Vai colocar dinheiro todo mês?",
@@ -116,6 +124,7 @@ window.Textos = {
     valorVazio: "Coloque um valor para investir agora ou por mês.",
     valorNegativo: "Os valores não podem ser negativos.",
     prazo: "Escolha um prazo entre 1 mês e 50 anos.",
+    taxa: "Coloque uma taxa entre 50% e 300% do CDI.",
     produto: "Escolha onde você investe."
   }
 };

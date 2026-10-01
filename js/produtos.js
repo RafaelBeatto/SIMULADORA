@@ -12,6 +12,7 @@
 //   resumo        frase curta em linguagem simples
 //   limiteValor   (opcional) só até este saldo rende `percentualCdi`...
 //   percentualAcimaDoLimite  ...o que passar do limite rende este % do CDI
+//   taxaEditavel  (opcional) true → a pessoa informa a % do CDI (percentualCdi vira o valor sugerido)
 //   condicao      (opcional) o que a pessoa precisa fazer para ter o produto
 //   parametros    (opcional) sobrescreve valores de Config.impostos só para este produto
 //                 ex.: { lciLockDays: 90 } ou { fundFee: 0.005 }
@@ -59,9 +60,19 @@ window.Catalogo = {
           fgc: true,
           condicao: "Receber ou depositar pelo menos R$ 900 por mês na conta Nubank. A taxa vale por 31 dias e se renova a cada mês; a simulação considera que você cumpre isso todo mês.",
           resumo: "Para quem movimenta R$ 900 por mês na conta. Rende 115% do CDI até R$ 5 mil; o que passar disso rende 100% do CDI."
+        },
+        {
+          id: "nubank-rdb-planejado",
+          nome: "RDB Planejado",
+          regra: "cdb",
+          percentualCdi: 102.5,
+          taxaEditavel: true,
+          liquidez: "Só na data escolhida (fim do prazo). Não dá para tirar antes.",
+          fgc: true,
+          condicao: "É usado dentro de uma Caixinha que já tenha dinheiro no RDB comum. A taxa muda conforme a data escolhida (cerca de 102,5% a 104% do CDI); confira no app.",
+          resumo: "Rende um pouco mais que a Caixinha, mas o dinheiro fica preso até a data que você escolher."
         }
         // Próximos (ainda não ativos):
-        // RDB Planejado — % do CDI maior conforme o prazo; dinheiro preso até a data.
         // LCI/LCA, Tesouro Direto, Nu Reserva (fundos).
       ]
     }

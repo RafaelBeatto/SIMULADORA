@@ -1,7 +1,7 @@
 # MAPA DO PROJETO — SIMULADORA
 
 > Atualize este arquivo sempre que a arquitetura mudar.
-> Última atualização: 2026-10-01 — Caixinha Turbo (faixa de valor no motor).
+> Última atualização: 2026-10-01 — RDB Planejado (taxa informada pela pessoa).
 
 ## 1. Visão geral
 
@@ -65,8 +65,9 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 2. Adicione um objeto em `produtos` do banco (ou um banco novo em `bancos`) com `id`, `nome`, `regra`, `percentualCdi`, `liquidez`, `fgc`, `resumo`.
 3. Se o produto tiver regra própria (prazo de carência, taxa de administração etc.), use `parametros` para sobrescrever `Config.impostos`. Ex.: `parametros: { lciLockDays: 90 }`.
 4. Com mais de um produto no banco, o campo "Qual investimento?" aparece sozinho.
-5. Produto com limite de valor: use `limiteValor` + `percentualAcimaDoLimite` (e `condicao` para explicar o requisito).
-6. Só é preciso mexer no motor se surgir uma regra de cálculo nova (ex.: taxa prefixada, IPCA+).
+5. Produto com taxa que varia (a pessoa informa): `taxaEditavel: true`; `percentualCdi` vira o valor sugerido no campo "Quanto o app oferece?" (`#s-taxa`).
+6. Produto com limite de valor: use `limiteValor` + `percentualAcimaDoLimite` (e `condicao` para explicar o requisito).
+7. Só é preciso mexer no motor se surgir uma regra de cálculo nova (ex.: taxa prefixada, IPCA+).
 
 ## 6. Produtos Nubank (pesquisa de out/2026)
 
@@ -74,7 +75,7 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 |---|---|---|---|
 | Caixinha (RDB resgate imediato) | `cdb` | 100% do CDI, FGC, resgate na hora | **Ativo** |
 | Caixinha Turbo 120% / 115% | `cdb` + `limiteValor` | 120% até R$ 10 mil (Nubank+/Ultravioleta) ou 115% até R$ 5 mil (quem movimenta R$ 900/mês); vale 31 dias, renovável; excedente 100% | **Ativo** (considera a condição mantida todo mês) |
-| RDB Planejado | `cdb` + sem resgate antes do prazo | > 100% do CDI conforme o prazo | Futuro |
+| RDB Planejado | `cdb` + `taxaEditavel` | ~102,5% a 104% do CDI conforme a data (sem tabela pública); padrão 102,5%, a pessoa informa a taxa do app; sem resgate antes do prazo (o prazo da simulação = vencimento) | **Ativo** |
 | LCI/LCA | `lci` | % do CDI conforme a oferta | Futuro |
 | Tesouro Direto | `tesouro` | Selic | Futuro |
 | Nu Reserva (fundos) | `fund` | Variável, sem garantia | Futuro |
