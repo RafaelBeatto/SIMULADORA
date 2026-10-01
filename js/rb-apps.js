@@ -5,7 +5,7 @@
 //   id          identificador único (sem espaços)
 //   name        nome curto mostrado no menu
 //   description frase curta (aparece ao passar o mouse)
-//   icon        nome de um ícone embutido (calculator, building, notebook, chart, file, settings, app)
+//   icon        nome de um ícone embutido (calculator, building, notebook, chart, file, settings, wheel, app)
 //               ou caminho/URL de imagem (ex.: "img/meu-icone.png")
 //   url         endereço do aplicativo. Enquanto começar com "URL_", o item aparece como "link pendente".
 //   order       posição no menu (menor primeiro)
@@ -46,7 +46,16 @@ window.RB_APPS = [
     url: "https://rafaelbeatto.github.io/SIMULADORA/",
     order: 4,
     enabled: true
+  },
+  {
+    id: "gira-conhecimento",
+    name: "Gira Conhecimento",
+    description: "SAERO — A Roleta do Saber (jogo)",
+    icon: "wheel",
+    url: "https://rafaelbeatto.github.io/Gira--Conhecimento-SAERO-A-Roleta-do-Saber-Digitaal./",
+    order: 5,
+    enabled: true
   }
   // Exemplo para o futuro:
-  // { id: "rb-docs", name: "RB Docs", description: "Editor de documentos", icon: "file", url: "URL_DO_RB_DOCS", order: 5, enabled: true }
+  // { id: "rb-docs", name: "RB Docs", description: "Editor de documentos", icon: "file", url: "URL_DO_RB_DOCS", order: 6, enabled: true }
 ];
