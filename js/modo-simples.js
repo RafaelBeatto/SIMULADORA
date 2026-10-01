@@ -25,6 +25,10 @@
   function showProductSummary() {
     const found = window.Catalogo.produto(byId("s-produto").value);
     byId("s-produto-resumo").textContent = found ? `${found.produto.nome}: ${found.produto.resumo}` : "";
+    // Produtos com taxa variável (ex.: RDB Planejado) mostram o campo de taxa, já com o valor padrão.
+    const editable = Boolean(found && found.produto.taxaEditavel);
+    byId("s-taxa-campo").hidden = !editable;
+    if (editable) byId("s-taxa").value = found.produto.percentualCdi;
   }
 
   function readMonths() {
@@ -63,12 +67,14 @@
       holidays: holidaySet(start, end)
     };
     const produto = found.produto;
-    const spec = { key: produto.id, name: produto.nome, rule: produto.regra, rate: produto.percentualCdi / 100 };
+    const percentual = produto.taxaEditavel ? Number(byId("s-taxa").value) : produto.percentualCdi;
+    if (!Number.isFinite(percentual) || percentual < 50 || percentual > 300) throw new Error(T.erros.taxa);
+    const spec = { key: produto.id, name: produto.nome, rule: produto.regra, rate: percentual / 100 };
     if (produto.limiteValor) {
       spec.limit = produto.limiteValor;
       spec.rateAbove = produto.percentualAcimaDoLimite / 100;
     }
-    return { settings, spec, found, months };
+    return { settings, spec, found, months, percentual };
   }
 
   // ---------- Resultado ----------
@@ -96,7 +102,7 @@
     ], byId("s-grafico"));
   }
 
-  function renderResult(result, found, months) {
+  function renderResult(result, found, months, percentual) {
     const r = result.products[0];
     const R = T.resultado, D = R.detalhes;
     const { produto, banco } = found;
@@ -132,7 +138,7 @@
         <summary>${R.verDetalhes}</summary>
         <dl class="detail-list">
           <dt>${D.produto}</dt><dd>${escapeHtml(banco.nome)} · ${escapeHtml(produto.nome)}</dd>
-          <dt>${D.rende}</dt><dd>${produto.percentualCdi}% do CDI${produto.limiteValor ? ` até ${currency(produto.limiteValor)}; ${D.acimaDoLimite} ${produto.percentualAcimaDoLimite}% do CDI` : ""}</dd>
+          <dt>${D.rende}</dt><dd>${String(percentual).replace(".", ",")}% do CDI${produto.limiteValor ? ` até ${currency(produto.limiteValor)}; ${D.acimaDoLimite} ${produto.percentualAcimaDoLimite}% do CDI` : ""}</dd>
           ${produto.condicao ? `<dt>${D.condicao}</dt><dd>${escapeHtml(produto.condicao)}</dd>` : ""}
           <dt>${D.cdi}</dt><dd>${percentage(window.Config.cdiPadrao)} ao ano (${escapeHtml(window.Config.cdiReferencia)})<br><small>${D.cdiExplica}</small></dd>
           <dt>${D.periodo}</dt><dd>${dateFormat.format(result.settings.start)} a ${dateFormat.format(result.settings.end)}</dd>
@@ -181,8 +187,8 @@
     const error = byId("s-erro");
     error.style.display = "none";
     try {
-      const { settings, spec, found, months } = buildSettings();
-      renderResult(runSimulation(settings, [spec]), found, months);
+      const { settings, spec, found, months, percentual } = buildSettings();
+      renderResult(runSimulation(settings, [spec]), found, months, percentual);
     } catch (problem) {
       error.textContent = problem.message;
       error.style.display = "block";

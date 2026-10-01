@@ -41,6 +41,10 @@
               <select id="s-produto"></select>
             </div>
             <p class="hint" id="s-produto-resumo"></p>
+            <div class="field" id="s-taxa-campo" hidden>
+              <div class="label-row"><label for="s-taxa" data-texto="campos.taxa"></label><button class="ajuda-btn" type="button" data-ajuda="taxa">?</button></div>
+              <div class="money-input"><input id="s-taxa" type="number" min="50" max="300" step="0.1" inputmode="decimal"><span class="suffix">% do CDI</span></div>
+            </div>
             <div class="field">
               <div class="label-row"><label for="s-valor" data-texto="campos.valorInicial"></label><button class="ajuda-btn" type="button" data-ajuda="valorInicial">?</button></div>
               <div class="money-input"><span>R$</span><input id="s-valor" type="number" min="0" step="0.01" value="1000" inputmode="decimal"></div>
