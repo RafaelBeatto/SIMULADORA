@@ -96,9 +96,9 @@
   function renderChart() {
     if (!lastResult) return;
     window.Grafico.render([
-      { color: "#9aa59f", points: investedPoints(lastResult), dashed: true },
+      { color: "--rb-series-3", points: investedPoints(lastResult), dashed: true },
       // Saldo antes do imposto (o imposto só é cobrado quando a pessoa tira o dinheiro).
-      { color: "#176b50", points: grossPoints(lastResult.products[0]) }
+      { color: "--rb-series-1", points: grossPoints(lastResult.products[0]) }
     ], byId("s-grafico"));
   }
 
@@ -130,8 +130,8 @@
         <div class="chart-title-row"><h3>${R.graficoTitulo}</h3><span>${R.graficoNota}</span></div>
         <div class="chart-wrap"><canvas id="s-grafico" role="img" aria-label="${R.graficoTitulo}"></canvas></div>
         <div class="legend">
-          <span class="legend-item"><i class="legend-mark" style="background:#9aa59f"></i>${R.graficoColocou}</span>
-          <span class="legend-item"><i class="legend-mark" style="background:#176b50"></i>${R.graficoSaldo}</span>
+          <span class="legend-item"><i class="legend-mark dashed"></i>${R.graficoColocou}</span>
+          <span class="legend-item"><i class="legend-mark" style="background:var(--rb-series-1)"></i>${R.graficoSaldo}</span>
         </div>
       </div>
       <details class="panel result-panel simple-details">
