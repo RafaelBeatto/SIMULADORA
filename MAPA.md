@@ -1,7 +1,7 @@
 # MAPA DO PROJETO — SIMULADORA
 
 > Atualize este arquivo sempre que a arquitetura mudar.
-> Última atualização: 2026-10-01 — criação dos modos Simples e Avançado.
+> Última atualização: 2026-10-01 — Caixinha Turbo (faixa de valor no motor).
 
 ## 1. Visão geral
 
@@ -51,7 +51,8 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 ## 4. Motor de cálculo (`js/motor.js`)
 
 - `runSimulation(settings, produtos, serieCdi)` → `{ products, settings, deposits }`.
-- `produtos`: lista de `{ key, name, rule, rate }`.
+- `produtos`: lista de `{ key, name, rule, rate, limit?, rateAbove? }`.
+  - `limit`/`rateAbove` (opcional): só os primeiros `limit` reais do **saldo** rendem `rate`; o excedente rende `rateAbove` (usado na Caixinha Turbo). A taxa do dia é a média ponderada aplicada a todos os lotes.
   - `rule` = regra de cálculo: `"cdb"` (CDB/RDB/Caixinha: IR regressivo + IOF), `"lci"` (isento de IR + carência), `"tesouro"` (IR + custódia B3), `"fund"` (IR + come-cotas + taxa de administração).
   - `rate` = fração do CDI (1 = 100%).
 - `settings`: datas, valores, frequências, tabelas de impostos. `settings.depositStart` (opcional) define o 1º aporte recorrente; o Modo Simples usa "1 mês depois do início", o Avançado usa a data inicial (como no original).
@@ -64,14 +65,15 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 2. Adicione um objeto em `produtos` do banco (ou um banco novo em `bancos`) com `id`, `nome`, `regra`, `percentualCdi`, `liquidez`, `fgc`, `resumo`.
 3. Se o produto tiver regra própria (prazo de carência, taxa de administração etc.), use `parametros` para sobrescrever `Config.impostos`. Ex.: `parametros: { lciLockDays: 90 }`.
 4. Com mais de um produto no banco, o campo "Qual investimento?" aparece sozinho.
-5. Só é preciso mexer no motor se surgir uma regra de cálculo nova (ex.: taxa prefixada, IPCA+, faixa de valor da Caixinha Turbo).
+5. Produto com limite de valor: use `limiteValor` + `percentualAcimaDoLimite` (e `condicao` para explicar o requisito).
+6. Só é preciso mexer no motor se surgir uma regra de cálculo nova (ex.: taxa prefixada, IPCA+).
 
 ## 6. Produtos Nubank (pesquisa de out/2026)
 
 | Produto | Regra | Rendimento | Situação |
 |---|---|---|---|
 | Caixinha (RDB resgate imediato) | `cdb` | 100% do CDI, FGC, resgate na hora | **Ativo** |
-| Caixinha Turbo | `cdb` + faixa de valor | 120% até R$ 10 mil (Nubank+/Ultravioleta) ou 115% até R$ 5 mil (quem movimenta R$ 900/mês); vale 31 dias, renovável; excedente 100% | Futuro (precisa de suporte a faixa de valor no motor) |
+| Caixinha Turbo 120% / 115% | `cdb` + `limiteValor` | 120% até R$ 10 mil (Nubank+/Ultravioleta) ou 115% até R$ 5 mil (quem movimenta R$ 900/mês); vale 31 dias, renovável; excedente 100% | **Ativo** (considera a condição mantida todo mês) |
 | RDB Planejado | `cdb` + sem resgate antes do prazo | > 100% do CDI conforme o prazo | Futuro |
 | LCI/LCA | `lci` | % do CDI conforme a oferta | Futuro |
 | Tesouro Direto | `tesouro` | Selic | Futuro |

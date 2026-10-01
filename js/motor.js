@@ -1,6 +1,7 @@
 // Motor de cálculo: não lê nem escreve na tela.
 // Recebe um objeto `settings` e uma lista de produtos ({ key, name, rule, rate }).
 // rule: "cdb" (CDB/RDB/Caixinha), "lci" (LCI/LCA), "tesouro" (Tesouro Selic), "fund" (Fundo DI).
+// Opcional: limit + rateAbove → só os primeiros `limit` reais do saldo rendem `rate`; o excedente rende `rateAbove`.
 (() => {
   const DAY = 86400000;
 
@@ -195,10 +196,15 @@
       if (isBusinessDay(date, settings.holidays)) {
         const annualRate = cdiSeries.has(dateKey) ? cdiSeries.get(dateKey) / 100 : settings.cdiFuture;
         const dailyCdi = Math.pow(1 + annualRate, 1 / 252) - 1;
+        let dayRate = rate;
+        if (spec.limit > 0) {
+          const earning = lots.reduce((sum, lot) => sum + (date > lot.date ? lot.value : 0), 0);
+          if (earning > spec.limit) dayRate = (spec.limit * rate + (earning - spec.limit) * spec.rateAbove) / earning;
+        }
         lots.forEach((lot) => {
           if (date <= lot.date) return;
           const before = lot.value;
-          lot.value *= 1 + dailyCdi * rate;
+          lot.value *= 1 + dailyCdi * dayRate;
           if (rule === "fund") lot.gainSinceComeCotas += lot.value - before;
         });
 

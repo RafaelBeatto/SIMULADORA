@@ -38,7 +38,7 @@ window.Textos = {
       oQue: "É o tipo de aplicação dentro do banco.",
       paraQue: "Cada tipo rende diferente, tem regras de imposto diferentes e prazos diferentes para tirar o dinheiro.",
       colocar: "Escolha o que você usa no app. Na dúvida, use a Caixinha.",
-      exemplo: "Caixinha do Nubank: você pode tirar o dinheiro quando quiser."
+      exemplo: "Caixinha Turbo: rende mais, mas só até um limite de valor. O que passar do limite rende como a Caixinha comum."
     },
     valorInicial: {
       titulo: "Quanto você vai investir agora?",
@@ -92,6 +92,8 @@ window.Textos = {
     detalhes: {
       produto: "Investimento",
       rende: "Quanto rende",
+      acimaDoLimite: "o que passar disso rende",
+      condicao: "Condição",
       cdi: "CDI usado na conta",
       cdiExplica: "CDI é a taxa que os bancos usam como base para pagar quem investe. Ela muda com o tempo; usamos uma estimativa.",
       periodo: "Período",

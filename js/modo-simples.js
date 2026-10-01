@@ -62,7 +62,12 @@
       withdrawAmount: 0,
       holidays: holidaySet(start, end)
     };
-    const spec = { key: found.produto.id, name: found.produto.nome, rule: found.produto.regra, rate: found.produto.percentualCdi / 100 };
+    const produto = found.produto;
+    const spec = { key: produto.id, name: produto.nome, rule: produto.regra, rate: produto.percentualCdi / 100 };
+    if (produto.limiteValor) {
+      spec.limit = produto.limiteValor;
+      spec.rateAbove = produto.percentualAcimaDoLimite / 100;
+    }
     return { settings, spec, found, months };
   }
 
@@ -127,7 +132,8 @@
         <summary>${R.verDetalhes}</summary>
         <dl class="detail-list">
           <dt>${D.produto}</dt><dd>${escapeHtml(banco.nome)} · ${escapeHtml(produto.nome)}</dd>
-          <dt>${D.rende}</dt><dd>${produto.percentualCdi}% do CDI</dd>
+          <dt>${D.rende}</dt><dd>${produto.percentualCdi}% do CDI${produto.limiteValor ? ` até ${currency(produto.limiteValor)}; ${D.acimaDoLimite} ${produto.percentualAcimaDoLimite}% do CDI` : ""}</dd>
+          ${produto.condicao ? `<dt>${D.condicao}</dt><dd>${escapeHtml(produto.condicao)}</dd>` : ""}
           <dt>${D.cdi}</dt><dd>${percentage(window.Config.cdiPadrao)} ao ano (${escapeHtml(window.Config.cdiReferencia)})<br><small>${D.cdiExplica}</small></dd>
           <dt>${D.periodo}</dt><dd>${dateFormat.format(result.settings.start)} a ${dateFormat.format(result.settings.end)}</dd>
           <dt>${D.liquidez}</dt><dd>${escapeHtml(produto.liquidez)}</dd>
