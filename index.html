@@ -3,14 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f3ed">
-  <title>Rendimento | Simulador CDI</title>
+  <meta name="theme-color" content="#0A0A0A">
+  <title>Simuladora · RB</title>
+  <link rel="icon" href="img/rb-favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/estilos.css">
+  <script>
+    // Aplica o tema salvo antes de desenhar a página (evita piscar). Padrão: escuro.
+    try { if (localStorage.getItem("rb-tema") === "light") document.documentElement.dataset.theme = "light"; } catch (error) { /* sem armazenamento */ }
+  </script>
 </head>
 <body>
   <header class="topbar">
-    <div class="brand"><span class="brand-mark">R</span><span class="brand-name">rendimento</span></div>
-    <span class="top-note">Simulador de renda fixa atrelada ao CDI</span>
+    <div class="brand"><span class="brand-mark" aria-label="RB">RB</span><span class="brand-name">Simuladora<small>v2</small></span></div>
+    <div class="top-actions">
+      <span class="top-note">simulador de renda fixa · CDI</span>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Alternar tema claro/escuro"><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    </div>
   </header>
   <main>
     <section class="intro" aria-labelledby="page-title">
@@ -59,13 +70,13 @@
               <p class="hint" data-texto="campos.mensalDica"></p>
             </div>
           </div>
-          <button class="primary" type="submit" data-texto="botoes.calcular">Calcular</button>
+          <button class="primary" type="submit"><span data-texto="botoes.calcular">Calcular</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
           <div class="error-message" id="s-erro" role="alert"></div>
         </form>
       </aside>
       <section class="results" aria-label="Resultado da simulação" aria-live="polite">
         <div id="s-resultado">
-          <div class="panel empty-state"><div class="empty-icon">↗</div><strong data-texto="resultado.vazioTitulo"></strong><p data-texto="resultado.vazioTexto"></p></div>
+          <div class="panel empty-state"><div class="empty-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></div><strong data-texto="resultado.vazioTitulo"></strong><p data-texto="resultado.vazioTexto"></p></div>
         </div>
         <div class="disclaimer" data-texto="avisos.estimativa"></div>
       </section>
@@ -83,8 +94,8 @@
 
           <div class="subsection">
             <div class="subsection-title"><h3>CDI e calendário</h3><div class="source-actions">
-              <button class="button-small" id="fetch-cdi" type="button" title="Consultar série diária do Banco Central">↻ CDI online</button>
-              <label class="file-button" for="csv-file" title="Importar arquivo CSV">↑ CSV</label>
+              <button class="button-small" id="fetch-cdi" type="button" title="Consultar série diária do Banco Central"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>CDI online</button>
+              <label class="file-button" for="csv-file" title="Importar arquivo CSV"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>CSV</label>
               <input class="upload-input" id="csv-file" type="file" accept=".csv,text/csv">
             </div></div>
             <div class="field-grid">
@@ -146,7 +157,7 @@
               <div class="field full"><p class="hint">Padrões tributários são referências editáveis para pessoa física, não confirmação da legislação vigente. Feriados locais e condições do emissor podem alterar datas e liquidez.</p></div>
             </div>
           </details>
-          <button class="primary" type="submit">Calcular comparação <span aria-hidden="true">→</span></button>
+          <button class="primary" type="submit">Calcular comparação <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
           <div class="error-message" id="error-message" role="alert"></div>
         </form>
       </aside>
@@ -157,7 +168,7 @@
           <span class="results-label">Rendimento após custos e impostos estimados</span>
         </div>
         <div id="results-content">
-          <div class="panel empty-state"><div class="empty-icon">↗</div><strong>Uma comparação começa pelos detalhes</strong><p>Defina período, taxa e movimentações para estimar o valor líquido em cada alternativa.</p></div>
+          <div class="panel empty-state"><div class="empty-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></div><strong>Uma comparação começa pelos detalhes</strong><p>Defina período, taxa e movimentações para estimar o valor líquido em cada alternativa.</p></div>
         </div>
         <div class="disclaimer"><strong>Importante:</strong> estimativa para pessoa física residente no Brasil. Não inclui regras específicas de cada emissor, spread de compra/venda, liquidez contratual, marcação a mercado, taxas de performance ou mudanças legais não confirmadas. O CDI futuro é hipótese, não previsão. Confira contrato, prospecto, calendário e tributação aplicável antes de investir.</div>
         <div class="footer">Cálculos em dias úteis, base de 252 dias. Resultados arredondados para centavos.</div>

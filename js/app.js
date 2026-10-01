@@ -26,6 +26,21 @@
     button.addEventListener("click", () => setMode(button.dataset.modo));
   });
 
+  // Tema claro/escuro (padrão escuro). O <head> já aplica o tema salvo antes de desenhar.
+  function setTheme(theme) {
+    if (theme === "light") document.documentElement.dataset.theme = "light";
+    else delete document.documentElement.dataset.theme;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = theme === "light" ? "#FFFFFF" : "#0A0A0A";
+    try { localStorage.setItem("rb-tema", theme); } catch (error) { /* sem armazenamento */ }
+    window.dispatchEvent(new Event("resize")); // gráfico relê as cores do tema
+  }
+  byId("theme-toggle").addEventListener("click", () => {
+    setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+  });
+
+  setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
+
   let saved = "simples";
   try { saved = localStorage.getItem("simuladora-modo") || "simples"; } catch (error) { /* sem armazenamento */ }
   setMode(saved);

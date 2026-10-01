@@ -1,7 +1,8 @@
 // Modo Avançado: tela original do simulador (compara 4 produtos com todos os parâmetros).
 (() => {
   const { localIso, parseDate, currency, holidaySet, runSimulation } = window.Motor;
-  const colors = { cdb: "#176b50", lci: "#bd542b", tesouro: "#406f8a", fund: "#b28630" };
+  const colors = { cdb: "--rb-series-1", lci: "--rb-series-2", tesouro: "--rb-series-3", fund: "--rb-series-4" };
+  const dashed = { fund: true };
   const names = { cdb: "CDB / RDB", lci: "LCI / LCA", tesouro: "Tesouro Selic", fund: "Fundo DI" };
   const percentInputs = { cdb: "cdb-percent", lci: "lci-percent", tesouro: "tesouro-percent", fund: "fund-percent" };
   const cdiSeries = new Map();
@@ -47,7 +48,7 @@
   }
 
   function renderChart(products, canvas) {
-    window.Grafico.render(products.map((product) => ({ color: colors[product.product], points: product.points })), canvas);
+    window.Grafico.render(products.map((product) => ({ color: colors[product.product], points: product.points, dashed: dashed[product.product] })), canvas);
   }
 
   function renderResults(result) {
@@ -63,8 +64,8 @@
         <div class="summary-card"><div class="summary-name">Impostos estimados</div><div class="summary-value">${currency(best.totalTaxes)}</div><div class="summary-meta">${escapeHtml(best.name)} · IR, IOF e come-cotas</div></div>
         <div class="summary-card"><div class="summary-name">Custos estimados</div><div class="summary-value">${currency(best.totalFees)}</div><div class="summary-meta">${escapeHtml(best.name)} · taxas de administração/custódia</div></div>
       </div>
-      <div class="panel result-panel"><div class="chart-title-row"><h3>Evolução do saldo</h3><span>Valores nominais · sem inflação</span></div><div class="chart-wrap"><canvas id="balance-chart" aria-label="Gráfico de evolução estimada dos saldos" role="img"></canvas></div><div class="legend">${products.map((product) => `<span class="legend-item"><i class="legend-mark" style="background:${colors[product.product]}"></i>${escapeHtml(product.name)}</span>`).join("")}</div></div>
-      <div class="panel result-panel"><div class="chart-title-row"><h3>Resultado por alternativa</h3><span>${currency(netInvested)} aportados no período</span></div><div class="table-scroll"><table><thead><tr><th>Produto</th><th>Saldo final líquido*</th><th>Rendimento líquido</th><th>Impostos</th><th>Custos</th><th>Resgates líquidos</th></tr></thead><tbody>${products.map((product) => `<tr><td><span class="table-product"><i class="dot" style="background:${colors[product.product]}"></i>${escapeHtml(product.name)}</span></td><td class="positive">${currency(product.finalValue)}${product.blockedAtEnd > 0.01 ? `<br><span class="hint">${currency(product.blockedAtEnd)} em carência</span>` : ""}</td><td>${currency(product.earnings)}</td><td>${currency(product.totalTaxes)}</td><td>${currency(product.totalFees)}</td><td>${currency(product.netWithdrawals)}</td></tr>`).join("")}</tbody></table></div><p class="hint">* Após resgate hipotético na data final; parcelas ainda em carência são mostradas pelo valor bruto e permanecem indisponíveis.</p></div>
+      <div class="panel result-panel"><div class="chart-title-row"><h3>Evolução do saldo</h3><span>Valores nominais · sem inflação</span></div><div class="chart-wrap"><canvas id="balance-chart" aria-label="Gráfico de evolução estimada dos saldos" role="img"></canvas></div><div class="legend">${products.map((product) => `<span class="legend-item"><i class="legend-mark${dashed[product.product] ? " dashed" : ""}" style="background:var(${colors[product.product]})"></i>${escapeHtml(product.name)}</span>`).join("")}</div></div>
+      <div class="panel result-panel"><div class="chart-title-row"><h3>Resultado por alternativa</h3><span>${currency(netInvested)} aportados no período</span></div><div class="table-scroll"><table><thead><tr><th>Produto</th><th>Saldo final líquido*</th><th>Rendimento líquido</th><th>Impostos</th><th>Custos</th><th>Resgates líquidos</th></tr></thead><tbody>${products.map((product) => `<tr><td><span class="table-product"><i class="dot" style="background:var(${colors[product.product]})"></i>${escapeHtml(product.name)}</span></td><td class="positive">${currency(product.finalValue)}${product.blockedAtEnd > 0.01 ? `<br><span class="hint">${currency(product.blockedAtEnd)} em carência</span>` : ""}</td><td>${currency(product.earnings)}</td><td>${currency(product.totalTaxes)}</td><td>${currency(product.totalFees)}</td><td>${currency(product.netWithdrawals)}</td></tr>`).join("")}</tbody></table></div><p class="hint">* Após resgate hipotético na data final; parcelas ainda em carência são mostradas pelo valor bruto e permanecem indisponíveis.</p></div>
       <div class="panel result-panel"><div class="chart-title-row"><h3>Eventos fiscais e movimentações</h3><span>Datas efetivas na simulação</span></div><div class="event-list" id="event-list"></div></div>`;
     renderChart(products, byId("balance-chart"));
     const eventList = products.flatMap((product) => product.events.map((event) => ({ ...event, name: product.name })))
