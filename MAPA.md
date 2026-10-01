@@ -1,7 +1,7 @@
 # MAPA DO PROJETO — SIMULADORA
 
 > Atualize este arquivo sempre que a arquitetura mudar.
-> Última atualização: 2026-10-01 — identidade visual RB (tokens, tema escuro/claro).
+> Última atualização: 2026-10-01 — logo oficial RB no header e favicon.
 
 ## 1. Visão geral
 
@@ -18,7 +18,7 @@
 SIMULADORA/
 ├── index.html            → estrutura das telas (Simples, Avançado, modal de ajuda) e carga dos scripts
 ├── css/estilos.css       → todo o visual: tokens RB (escuro/claro) + componentes
-├── img/rb-favicon.svg    → favicon (monograma provisório)
+├── img/                  → logo RB (rb-logo.png) e ícones (rb-favicon.png, rb-apple-touch.png)
 ├── js/config.js          → valores padrão: CDI projetado, IR, IOF, come-cotas, custódia
 ├── js/produtos.js        → catálogo de bancos/produtos do Modo Simples
 ├── js/textos.js          → textos do Modo Simples: campos, botões, ajudas, resultados, avisos, erros
@@ -42,7 +42,7 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 - Azul (`--rb-blue`) só para destaque: estado ativo, foco, valor ganho, valor final, indicadores.
 - Gráfico: cores vêm dos tokens `--rb-series-1..4`, `--rb-grid`, `--rb-muted` (o canvas lê o tema atual; troca de tema dispara redesenho).
 - Ícones: SVG inline no estilo Lucide (linhas, 1.75 de espessura), classe `.icon`.
-- **Logo:** `img/rb-favicon.svg` e o `.brand-mark` do header são provisórios (texto "RB"). Substituir pelo monograma oficial quando disponível.
+- **Logo:** `img/rb-logo.png` (monograma oficial, branco, fundo transparente; no tema claro o CSS inverte para preto). Favicon `img/rb-favicon.png` (64px) e `img/rb-apple-touch.png` (180px): monograma sobre quadrado preto arredondado, como no guia da marca. Se receber o SVG oficial, troque esses arquivos mantendo os nomes.
 
 ## 4. Onde fica cada coisa
 

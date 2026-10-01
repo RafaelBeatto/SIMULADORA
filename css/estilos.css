@@ -87,13 +87,12 @@ button { cursor: pointer; }
   background: var(--rb-bg);
 }
 .brand { display: flex; gap: 12px; align-items: center; }
-.brand-mark {
-  width: 34px; height: 34px; display: grid; place-items: center;
-  border: 1px solid var(--rb-text); border-radius: var(--rb-radius-sm);
-  color: var(--rb-text); font: 700 13px/1 var(--rb-mono); letter-spacing: -.5px;
-}
-.brand-name { font-weight: 600; font-size: 15px; letter-spacing: -.1px; }
-.brand-name small { margin-left: 8px; color: var(--rb-muted); font: 400 11px var(--rb-mono); }
+/* Logo oficial (PNG branco com fundo transparente); no tema claro vira preto via filtro. */
+.brand-mark { display: block; width: auto; height: 27px; }
+:root[data-theme="light"] .brand-mark { filter: invert(1); }
+.brand-divider { width: 1px; height: 28px; background: var(--rb-border-strong); }
+.brand-name { display: grid; font-weight: 600; font-size: 15px; line-height: 1.15; letter-spacing: -.1px; }
+.brand-name small { color: var(--rb-muted); font: 500 9px var(--rb-mono); text-transform: uppercase; letter-spacing: 2.6px; }
 .top-actions { display: flex; align-items: center; gap: 14px; }
 .top-note { color: var(--rb-muted); font: 11px var(--rb-mono); }
 .theme-toggle {
