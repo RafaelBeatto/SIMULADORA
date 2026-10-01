@@ -1,7 +1,7 @@
 # MAPA DO PROJETO — SIMULADORA
 
 > Atualize este arquivo sempre que a arquitetura mudar.
-> Última atualização: 2026-10-01 — logo oficial RB no header e favicon.
+> Última atualização: 2026-10-01 — Central RB (launcher de aplicativos na logo).
 
 ## 1. Visão geral
 
@@ -27,11 +27,14 @@ SIMULADORA/
 ├── js/modo-avancado.js   → tela Avançada (lê o formulário original e mostra a comparação)
 ├── js/modo-simples.js    → tela Simples (lê as 4 perguntas, monta a simulação e mostra o resultado)
 ├── js/app.js             → aplica os textos (data-texto) e troca de modo
+├── js/rb-apps.js         → Central RB: lista de aplicativos (nome, ícone, URL, ordem, ativo)
+├── js/rb-launcher.js     → Central RB: componente RBAppLauncher (menu de apps na logo)
+├── css/rb-launcher.css   → Central RB: estilos do launcher
 ├── MAPA.md               → este arquivo
 └── README.md
 ```
 
-**Ordem dos scripts importa** (em `index.html`): config → produtos → textos → motor → grafico → modo-avancado → modo-simples → app.
+**Ordem dos scripts importa** (em `index.html`): config → produtos → textos → motor → grafico → modo-avancado → modo-simples → app → rb-apps → rb-launcher.
 Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo direto, sem servidor. Cada um expõe um objeto global: `Config`, `Catalogo`, `Textos`, `Motor`, `Grafico`.
 
 ## 3. Identidade visual RB
@@ -44,7 +47,16 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 - Ícones: SVG inline no estilo Lucide (linhas, 1.75 de espessura), classe `.icon`.
 - **Logo:** `img/rb-logo.png` (monograma oficial, branco, fundo transparente; no tema claro o CSS inverte para preto). Favicon `img/rb-favicon.png` (64px) e `img/rb-apple-touch.png` (180px): monograma sobre quadrado preto arredondado, como no guia da marca. Se receber o SVG oficial, troque esses arquivos mantendo os nomes.
 
-## 4. Onde fica cada coisa
+## 4. Central RB (menu de aplicativos)
+
+- Clicar na logo RB do header abre um painel com os aplicativos RB; cada um abre em **nova aba** (link `target="_blank" rel="noopener noreferrer"`). Fecha com novo clique, clique fora, ESC ou ao escolher um app.
+- **Não** contém lógica dos outros sistemas: só nome, ícone, descrição, URL, ordem e status.
+- `js/rb-apps.js` (`window.RB_APPS`) é a configuração única. URL que começa com `URL_` aparece como "Link pendente" (não clicável). `enabled: false` esconde o app.
+- No header: `<div class="rb-launcher" data-rb-launcher data-current-app="investimentos">` envolve a logo (`.rb-launcher__button`). `data-current-app` marca o app atual ("Você está aqui").
+- Ícones embutidos: `calculator`, `building`, `notebook`, `chart`, `file`, `settings`, `app`; ou caminho de imagem.
+- Para usar em outro sistema RB: copiar `js/rb-apps.js`, `js/rb-launcher.js`, `css/rb-launcher.css`, envolver a logo como acima e trocar `data-current-app`. O CSS usa os tokens `--rb-*` (com valores de reserva se o projeto não tiver).
+
+## 5. Onde fica cada coisa
 
 | Assunto | Local |
 |---|---|
@@ -59,7 +71,7 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 | Padrões do Modo Avançado | atributos `value=` dos inputs no HTML (o CDI vem de `Config.cdiPadrao`) |
 | Bancos e produtos | `js/produtos.js` |
 
-## 5. Motor de cálculo (`js/motor.js`)
+## 6. Motor de cálculo (`js/motor.js`)
 
 - `runSimulation(settings, produtos, serieCdi)` → `{ products, settings, deposits }`.
 - `produtos`: lista de `{ key, name, rule, rate, limit?, rateAbove? }`.
@@ -70,7 +82,7 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 - Simulação **dia a dia**, base 252 dias úteis, cada aporte vira um lote (IR e IOF pela idade de cada lote), resgate FIFO, resgate total hipotético no fim para obter o valor líquido.
 - Resultado por produto: `finalValue` (líquido), `grossFinalValue` (bruto), `invested`, `earnings`, `totalTaxes`, `totalFees`, `points` (mensal; o último ponto é líquido), `events`.
 
-## 6. Como adicionar um produto ou banco
+## 7. Como adicionar um produto ou banco
 
 1. Abra `js/produtos.js`.
 2. Adicione um objeto em `produtos` do banco (ou um banco novo em `bancos`) com `id`, `nome`, `regra`, `percentualCdi`, `liquidez`, `fgc`, `resumo`.
@@ -80,7 +92,7 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 6. Produto com limite de valor: use `limiteValor` + `percentualAcimaDoLimite` (e `condicao` para explicar o requisito).
 7. Só é preciso mexer no motor se surgir uma regra de cálculo nova (ex.: taxa prefixada, IPCA+).
 
-## 7. Produtos Nubank (pesquisa de out/2026)
+## 8. Produtos Nubank (pesquisa de out/2026)
 
 | Produto | Regra | Rendimento | Situação |
 |---|---|---|---|
@@ -93,7 +105,7 @@ Os scripts são comuns (não são módulos ES) para funcionar ao abrir o arquivo
 
 Impostos em 2026: tabela regressiva (22,5% / 20% / 17,5% / 15%) e isenção de LCI/LCA continuam valendo (a MP 1.303/2025 perdeu a validade).
 
-## 8. Pontos de atenção
+## 9. Pontos de atenção
 
 - **CDI padrão** (`Config.cdiPadrao` = 14,15% a.a., ago/2026): revisar periodicamente.
 - Botão "CDI online" (Modo Avançado): a série 12 do BCB vem em **% ao dia** e é convertida para % ao ano (base 252) ao carregar. O CSV importado espera % ao ano.

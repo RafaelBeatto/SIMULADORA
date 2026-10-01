@@ -1,0 +1,54 @@
+/* RBAppLauncher — estilos do menu de aplicativos da Central RB.
+   Usa os tokens --rb-* do projeto; os valores após a vírgula são reserva para
+   projetos que ainda não tenham esses tokens (tema escuro). */
+.rb-launcher { position: relative; display: inline-flex; }
+.rb-launcher__button {
+  display: inline-flex; align-items: center; justify-content: center; padding: 6px 8px; margin: -6px -8px;
+  border: 1px solid transparent; border-radius: var(--rb-radius-sm, 6px); background: transparent; cursor: pointer;
+  transition: background var(--rb-transition, 160ms ease), border-color var(--rb-transition, 160ms ease);
+}
+.rb-launcher__button:hover,
+.rb-launcher.is-open .rb-launcher__button { background: var(--rb-surface, #111); border-color: var(--rb-border, #252525); }
+.rb-launcher__button:focus-visible { outline: 2px solid var(--rb-blue, #3B82F6); outline-offset: 2px; }
+
+.rb-launcher__panel {
+  position: absolute; z-index: 1000; top: calc(100% + 14px); left: -8px;
+  width: min(336px, calc(100vw - 24px)); padding: 14px; /* largura e posição finais são ajustadas pelo JS ao abrir */
+  border: 1px solid var(--rb-border-strong, #3A3A3A); border-radius: var(--rb-radius-md, 10px);
+  background: var(--rb-surface, #111); color: var(--rb-text, #F5F5F5);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+  animation: rb-launcher-in 140ms ease;
+}
+.rb-launcher__title {
+  display: flex; align-items: center; gap: 8px; margin: 2px 4px 12px;
+  color: var(--rb-muted, #888); font: 500 11px var(--rb-mono, ui-monospace, monospace); text-transform: uppercase; letter-spacing: 1px;
+}
+.rb-launcher__title::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--rb-blue, #3B82F6); }
+.rb-launcher__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.rb-launcher__item {
+  height: 100%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 12px 6px 10px;
+  border: 1px solid transparent; border-radius: var(--rb-radius-sm, 6px);
+  color: inherit; text-align: center; text-decoration: none;
+  transition: background var(--rb-transition, 160ms ease), border-color var(--rb-transition, 160ms ease), transform var(--rb-transition, 160ms ease);
+}
+a.rb-launcher__item:hover { background: var(--rb-surface-2, #181818); border-color: var(--rb-border, #252525); transform: translateY(-1px); }
+a.rb-launcher__item:focus-visible { outline: 2px solid var(--rb-blue, #3B82F6); outline-offset: 0; }
+.rb-launcher__item.is-current { border-color: var(--rb-border, #252525); }
+.rb-launcher__item.is-disabled { opacity: .45; cursor: not-allowed; }
+.rb-launcher__icon {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  border: 1px solid var(--rb-border-strong, #3A3A3A); border-radius: var(--rb-radius-md, 10px);
+  background: var(--rb-bg, #0A0A0A); color: var(--rb-text, #F5F5F5);
+}
+a.rb-launcher__item:hover .rb-launcher__icon, .rb-launcher__item.is-current .rb-launcher__icon { border-color: var(--rb-blue, #3B82F6); color: var(--rb-blue, #3B82F6); }
+.rb-launcher__icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.rb-launcher__icon img { width: 26px; height: 26px; object-fit: contain; }
+.rb-launcher__name { font-size: 12px; font-weight: 500; line-height: 1.25; }
+.rb-launcher__note { margin-top: -3px; color: var(--rb-muted, #888); font: 10px var(--rb-mono, ui-monospace, monospace); }
+.rb-launcher__empty { margin: 4px; color: var(--rb-muted, #888); font-size: 13px; }
+
+@keyframes rb-launcher-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rb-launcher__panel { animation: none; } .rb-launcher__item { transition: none; } }
+@media (max-width: 300px) {
+  .rb-launcher__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
